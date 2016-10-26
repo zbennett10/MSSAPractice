@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Collections.Specialized;
+using System.Collections;
+
+namespace FlashCardApp
+{
+    public partial class Form1 : Form
+    {
+        string randomKey;
+        string randomValue;
+        int randomIndex;
+        List<string> keyValues = new List<string>(); //constructs the list that holds the keys of our dictionary
+         
+
+        //dictionary object that hold keywords and keyword descriptions that will be displayed in card window
+        OrderedDictionary flashCards = new OrderedDictionary();
+
+        public Form1() //default constructor for Form1
+        {
+            InitializeComponent();
+            
+            //population of Ordered Dictionary containing keywords as Keys and definitions as Values
+            flashCards.Add("Sealed (Access Modifier)", "When applied to a class, the sealed modifier prevents other classes from inheriting from it. ");
+            flashCards.Add("Protected (Access Modifier)", "The type or member can be accessed only by code in the same class or struct, or in a class that is derived from that class.");
+            flashCards.Add("Static (Access Modifier", "Use the static modifier to declare a static member, which belongs to the type itself rather than to a specific object. The static modifier can be used with classes, fields, methods, properties, operators, events, and constructors, but it cannot be used with indexers, destructors, or types other than classes.");
+
+            //populates all the keys into a collection
+            ICollection keyCollection = flashCards.Keys;
+            
+            //iterates through the key collection and populates the key List
+            foreach (object o in keyCollection)
+            {
+                this.keyValues.Add(o.ToString());
+            }
+
+        }
+
+        //method that generates a random number and assigns it to the global variable randomIndex
+        private int RandomNumberMaker()
+        { 
+            Random r = new Random();
+            randomIndex = r.Next(0, keyValues.Count);
+            return randomIndex;
+        }
+
+        //handles button click. This handler calls our RandomNumberMaker function and and sets our labels to keys and values from our dictionary
+        private void changeText_Click(object sender, EventArgs e)
+        {
+            randomIndex = RandomNumberMaker();
+            this.randomKey = keyValues[randomIndex].ToString();
+            this.randomValue = flashCards[randomIndex].ToString();
+            this.label2.Text = randomValue;
+            this.label1.Text = randomKey;
+           
+        }
+    }
+}
